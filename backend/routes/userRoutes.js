@@ -1,10 +1,11 @@
 const express=require('express')
-const User=require("./db")
+const router= express.Router();
 const zod=require('zod');
+const { User, Account } = require("../db");
 const JWT_SECRET = require('../config');
 const { authmiddleware } = require('../middleware');
 
-const router= express.Router();
+
 
 const signupSchema=zod.object({
     username: zod.string(),
@@ -13,7 +14,7 @@ const signupSchema=zod.object({
     lastName: zod.string()
 })
 
-router.post('/signup',async(req,res)=>{
+router.post("/signup",async(req,res)=>{
     const body=req.body;
     const {success}=signupSchema.safeParse(req.body)
 
@@ -43,6 +44,11 @@ router.post('/signup',async(req,res)=>{
 
     const userid=user_id;
 
+    await Account.create({
+        userId,
+        balance: 1+Math.random()*10000
+    })
+
     const token=jwt.sign({
         userid
     },JWT_SECRET);
@@ -54,11 +60,13 @@ router.post('/signup',async(req,res)=>{
     })
 
 })
-
 const signinSchema=zod.object({
     username: zod.string(),
     password: zod.string(),
 })
+
+
+
 
 
 router.post('/signin',async(req,res)=>{
@@ -109,5 +117,33 @@ router.put('/',authmiddleware,async(req,res)=>{
     })
 
 })
+
+router.get('/find',async(req,res)=>{
+    const filter=req.query.filter ||""
+
+    const users=await User.find({
+        $or:[{
+            firstName:{
+                "$regex":filter
+            },
+            lastName:{
+                "$regex":filter
+            }
+        }]
+    })
+
+    res.json({
+        user:users.map(user=>({
+            username:user.username,
+            firstName:user.firstName,
+            lastName:user.lastName,
+            _id:user._id
+        }))
+    })
+})
+
+
+
+
 
 module.exports=router;
