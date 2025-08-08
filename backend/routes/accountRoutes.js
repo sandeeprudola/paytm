@@ -1,11 +1,11 @@
 const express=require('express');
-const { authmiddleware } = require('../middleware');
+const  { authMiddleware } = require("../middleware");
 const { Account } = require('../db');
 const { default: mongoose } = require('mongoose');
 
 const router=express.Router();
 
-router.get('/balance',authmiddleware,async(req,res)=>{
+router.get("/balance",authMiddleware,async(req,res)=>{
 
     const account=await Account.findOne({
         userId:req.userId
@@ -14,17 +14,16 @@ router.get('/balance',authmiddleware,async(req,res)=>{
     res.json({
         balance:account.balance
     })
-
 })
 
 
-router.post('/transfer',authmiddleware,async(req,res)=>{
+router.post("/transfer",authMiddleware,async(req,res)=>{
     const session=await mongoose.startSession();
 
     session.startTransaction();
     const {amount,to}=req.body;
 
-    const account= Account.findOne({userId:req.userId}).session(session);
+    const account= await Account.findOne({userId:req.userId}).session(session);
 
     if(!account || account.balance<amount){
         await session.abortTransaction();
@@ -33,7 +32,7 @@ router.post('/transfer',authmiddleware,async(req,res)=>{
         })
     }
 
-    const toaccount =Account.findOne({userId:to}).session(session)
+    const toaccount = await Account.findOne({userId:to}).session(session)
 
     if(!toaccount){
         await session.abortTransaction();

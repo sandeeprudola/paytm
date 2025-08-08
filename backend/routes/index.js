@@ -1,10 +1,10 @@
 const express=require('express')
-const user=require("./userRoutes")
-const account=require("./accountRoutes")
+const userRouter=require("./userRoutes")
+const accountRouter=require("./accountRoutes")
 
 const router=express.Router()
 
-router.use('/api/v1/user',user);
-router.use('api/v1/account',account)
+router.use('/user',userRouter);
+router.use('/account', accountRouter);
 
 module.exports=router;

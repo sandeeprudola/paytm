@@ -2,8 +2,9 @@ const express=require('express')
 const router= express.Router();
 const zod=require('zod');
 const { User, Account } = require("../db");
-const JWT_SECRET = require('../config');
-const { authmiddleware } = require('../middleware');
+const {JWT_SECRET}=require("../config")
+const jwt = require('jsonwebtoken');
+const  { authMiddleware } = require("../middleware");
 
 
 
@@ -17,16 +18,14 @@ const signupSchema=zod.object({
 router.post("/signup",async(req,res)=>{
     const body=req.body;
     const {success}=signupSchema.safeParse(req.body)
-
     if(!success){
         return res.status(411).json({
             message:"email already taken/incorrect credentials"
         })
-
-        }
+    }
 
     const existingUser=await User.findOne({
-        Username: req.body.Username
+        username: req.body.username
     })
 
     if(existingUser){
@@ -36,22 +35,20 @@ router.post("/signup",async(req,res)=>{
     }
 
     const user=await User.create({
-        username: req.body.Username,
+        username: req.body.username,
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName
     })
 
-    const userid=user_id;
+    const userId=user._id;
 
     await Account.create({
         userId,
         balance: 1+Math.random()*10000
     })
 
-    const token=jwt.sign({
-        userid
-    },JWT_SECRET);
+    const token=jwt.sign({userId: user._id},JWT_SECRET);
 
 
     res.json({
@@ -60,15 +57,13 @@ router.post("/signup",async(req,res)=>{
     })
 
 })
+
+
+
 const signinSchema=zod.object({
     username: zod.string(),
     password: zod.string(),
 })
-
-
-
-
-
 router.post('/signin',async(req,res)=>{
     const body=req.body
     const {success}=signinSchema.safeParse(req.body)
@@ -84,9 +79,12 @@ router.post('/signin',async(req,res)=>{
     })
 
     if(user){
-        const token=jwt.sign({
-            userid:user_id,
-        },JWT_SECRET);
+        const token=jwt.sign({userId:user._id,},JWT_SECRET);
+
+        res.json({
+            token: token
+        })
+        return;
     }
 
     res.status(411).json({
@@ -102,7 +100,7 @@ const updatebody=zod.object({
     lastName:zod.string().optional()
 })
 
-router.put('/',authmiddleware,async(req,res)=>{
+router.put('/',authMiddleware,async(req,res)=>{
     const {success}=updatebody.safeParse(req.body);
     if(!success){
         res.status(411).json({
@@ -141,9 +139,4 @@ router.get('/find',async(req,res)=>{
         }))
     })
 })
-
-
-
-
-
 module.exports=router;
