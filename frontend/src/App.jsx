@@ -4,8 +4,9 @@ import './App.css'
 import { Signup } from '../pages/Signup'
 import { Signin } from '../pages/Signin'
 import { Dashboard } from '../pages/Dashboard'
-import { Sendmoney } from '../pages/Sendmoney'
+
 import { Landing } from '../pages/Landing'
+import { Sendmoney } from '../pages/Sendmoney'
 
 function App() {
 
