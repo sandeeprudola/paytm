@@ -6,7 +6,8 @@ import { Signin } from '../pages/Signin'
 import { Dashboard } from '../pages/Dashboard'
 
 import { Landing } from '../pages/Landing'
-import { Sendmoney } from '../pages/Sendmoney'
+import { Send } from '../pages/Send'
+
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
        <Route path="/signup" element={<Signup/>}/>
        <Route path='/signin' element={<Signin/>}/>
        <Route path='/dashboard' element={<Dashboard/>}/>
-       <Route path='/send' element={<Sendmoney/>}/>
+       <Route path='/send' element={<Send/>}/>
      </Routes>
     </BrowserRouter>
    </>
