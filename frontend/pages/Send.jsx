@@ -27,7 +27,8 @@ export const Send = ()=>{
                                     setamount(e.target.value)
                                 }} label={"Amount in Rs"}/>
                                 <Button onClick={(e)=>{
-                                    axios.post("http://localhost:3000/api/v1/account/transfer",{
+                                    const API_URL = import.meta.env.VITE_BACKEND_URL;
+                                    axios.post(`${API_URL}/api/v1/account/transfer`,{
                                         to:id,
                                         amount
                                     },{

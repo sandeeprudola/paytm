@@ -3,16 +3,15 @@ import { Button } from "../components/Button"
 import { Heading } from "../components/Heading"
 import { Sub } from "../components/Sub"
 import { InputBox } from "../components/InputBox"
-
 import axios from "axios"
-import { Navigate } from "react-router-dom"
 import { BottomWarning } from "../components/BottomWarning"
-
+import { useNavigate } from "react-router-dom";
 
 
 export const Signin = ()=>{
     const [username,setuserName]=useState("")
     const [password,setpassword]=useState("")
+    const Navigate=useNavigate();
 
     return(
             <div className="bg-slate-300 flex h-screen justify-center ">
@@ -27,13 +26,15 @@ export const Signin = ()=>{
                             setpassword(e.target.value)
                         }} placeholder="123456" label={"Password"} />
                         <Button onClick={async()=>{
-                            const response=await axios.post("http://localhost/api/v1/user/signup",{
+                            const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+                            const response=await axios.post(`${API_URL}/api/v1/user/signin`,{
                                 username,
                                 password
                             })
                             localStorage.setItem("token",response.data.token)
                             Navigate('/dashboard')
-                        }} label={"Signin"}/>
+                        }} label={"Sign up"} />
                     </div>
                      <BottomWarning
                       label={"Already have an account?"}
