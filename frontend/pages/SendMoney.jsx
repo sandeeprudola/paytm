@@ -7,7 +7,7 @@ import axios from "axios"
 import { useState } from "react"
 
 
-export const SendMoney = ()=>{
+export const Sendmoney = ()=>{
     const [searchParams]=useSearchParams();
     const id=searchParams.get("id")
     const name=searchParams.get("name")
