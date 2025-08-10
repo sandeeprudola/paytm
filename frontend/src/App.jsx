@@ -4,7 +4,6 @@ import './App.css'
 import { Signup } from '../pages/Signup'
 import { Signin } from '../pages/Signin'
 import { Dashboard } from '../pages/Dashboard'
-
 import { Landing } from '../pages/Landing'
 import { Send } from '../pages/Send'
 

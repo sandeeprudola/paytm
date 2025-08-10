@@ -2,10 +2,11 @@ import { useState } from "react";
 import { BottomWarning } from "../components/BottomWarning"
 import { Button } from "../components/Button"
 import { Heading } from "../components/Heading"
+import { Sub } from "../components/Sub";
 import { InputBox } from "../components/InputBox"
-import { SubHeading } from "../components/Subheading";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+
 
 export const Signup = () => {
     const [firstName,setfirstName]=useState("")
@@ -18,7 +19,7 @@ export const Signup = () => {
             <div className="flex flex-col justify-center">
                 <div className="rounded-lg bg-white w-80 text-center p-2 h-max px-4">
                     <Heading label={"Sign up"} />
-                    <SubHeading label={"enter your details"}/>
+                    <Sub label={"Enter your details"}/>
                     <InputBox onChange={e=>{
                         setfirstName(e.target.value);
                     }} placeholder="John" label={"First Name"} />
