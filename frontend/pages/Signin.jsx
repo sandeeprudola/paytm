@@ -6,6 +6,7 @@ import { InputBox } from "../components/InputBox"
 
 import axios from "axios"
 import { Navigate } from "react-router-dom"
+import { BottomWarning } from "../components/BottomWarning"
 
 
 
