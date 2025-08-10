@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Button } from "../components/Button"
 import { Heading } from "../components/Heading"
 import { InputBox } from "../components/InputBox"

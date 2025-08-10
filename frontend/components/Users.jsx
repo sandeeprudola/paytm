@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./Button";
+import axios from "axios";
 
 
 export const Users = ()=>{
-    const [users,setusers]= useState([
-        { firstName: "John", lastName: "Doe", _id: "1" },
-        { firstName: "Jane", lastName: "Smith", _id: "2" },
-        { firstName: "Sandeep", lastName: "Rudola", _id: "3" }
-      ]);
+    const [users,setusers]= useState([])
+    const [filter,setFilter]=useState("")
+        
+
+    useEffect(()=>{
+        axios.get("http://localhost:3000/api/v1/user/find?filter=" + filter)
+            .then(response=>{
+                setusers(response.data.user)
+            })
+    },[filter])
       
     return (
         <>
@@ -15,10 +21,12 @@ export const Users = ()=>{
         Users
     </div>
     <div className="my-2">
-        <input placeholder="search users..." className="w-full px-2 py-3 border rounded border-slate-200" type="text" name="" id="" />
+        <input onChange={(e)=>{
+            setFilter(e.target.value)
+        }} placeholder="search users..." className="w-full px-2 py-3 border rounded border-slate-200" type="text" name="" id="" />
     </div>
     <div>
-    {users.map(user => <User key={user._id} user={user} />)}
+    {users.map(user => <User user={user} />)}
 
     </div>
 </>
