@@ -11,6 +11,7 @@ export const Users = ()=>{
     
 
     useEffect(()=>{
+        const API_URL = import.meta.env.VITE_BACKEND_URL;
         axios.get(`${API_URL}/api/v1/user/find?filter=` + filter)
             .then(response=>{
                 setusers(response.data.user)
