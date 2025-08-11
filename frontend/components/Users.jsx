@@ -8,10 +8,10 @@ import { useNavigate } from "react-router-dom";
 export const Users = ()=>{
     const [users,setusers]= useState([])
     const [filter,setFilter]=useState("")
-        
+    
 
     useEffect(()=>{
-        axios.get("http://localhost:3000/api/v1/user/find?filter=" + filter)
+        axios.get(`${API_URL}/api/v1/user/find?filter=` + filter)
             .then(response=>{
                 setusers(response.data.user)
             })
